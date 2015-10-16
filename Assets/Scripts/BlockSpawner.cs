@@ -12,11 +12,13 @@ public class BlockSpawner : MonoBehaviour
     public List<GameObject> JumpBlocks = new List<GameObject>();
     [SerializeField]
     public List<GameObject> SlideBlocks = new List<GameObject>();
+    [SerializeField]
+    public List<GameObject> Coin = new List<GameObject>();
     public List<Vector3> BlockSpawns = new List<Vector3>();
     [SerializeField]
     public SpawnFrequency BlockSpawnFrequency;
 
-    private enum EventType { Move = 1, Jump = 2, Slide = 3 };
+    private enum EventType { Move = 1, Jump = 2, Slide = 3, Coin = 4 };
     private float timer = 0;
     private float timeInterval;
     private GameObject parent;
@@ -53,7 +55,7 @@ public class BlockSpawner : MonoBehaviour
         if (timer >= timeInterval)
         {
 
-            EventType currentEvent = (EventType)Random.Range(1, 3);
+            EventType currentEvent = (EventType)Random.Range(1, 4);
             switch(currentEvent)
             {
                 case EventType.Move:
@@ -68,16 +70,34 @@ public class BlockSpawner : MonoBehaviour
                     {
                         GameObject objectToSpawn = JumpBlocks[Random.Range(0, JumpBlocks.Count)];
                         GameObject _object = Instantiate(objectToSpawn, BlockSpawns[2], objectToSpawn.transform.rotation) as GameObject;
+                        _object.transform.SetParent(parent.transform);
 
-                        timer = -1;
+                        timer = -2;
                         break;
                     }
                 case EventType.Slide:
                     {
-                        GameObject objectToSpawn = JumpBlocks[Random.Range(0, JumpBlocks.Count)];
-                        GameObject _object = Instantiate(objectToSpawn, BlockSpawns[2], objectToSpawn.transform.rotation) as GameObject;
+                        GameObject objectToSpawn = SlideBlocks[Random.Range(0, SlideBlocks.Count)];
+                        GameObject _object = Instantiate(objectToSpawn, new Vector3(0,0,13), objectToSpawn.transform.rotation) as GameObject;
+                        _object.transform.SetParent(parent.transform);
 
-                        timer = -1;
+                        timer = -2;
+                        break;
+                    }
+                case EventType.Coin:
+                    {
+                        GameObject objectToSpawn = Coin[0];
+                        Instantiate(objectToSpawn, BlockSpawns[Random.Range(0, 4)], objectToSpawn.transform.rotation);
+
+                        timer = 0;
+                        break;
+                    }
+                default:
+                    {
+                        GameObject objectToSpawn = Coin[0];
+                        Instantiate(objectToSpawn, BlockSpawns[Random.Range(0, 4)], objectToSpawn.transform.rotation);
+
+                        timer = 0;
                         break;
                     }
             }

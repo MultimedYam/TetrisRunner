@@ -8,15 +8,21 @@ public class CollisionBehaviour : MonoBehaviour
 
     void OnTriggerEnter(Collider collisionTarget)
     {
-        print("Collided, possible message sent");
+        Debug.Log("Collided, possible message sent");
 
         if (collisionTarget.tag == "SideWall")
+        {
             MessageTarget.SendMessage("OnSideWallCollision", SendMessageOptions.DontRequireReceiver);
+        }
 
         if (collisionTarget.tag == "FaceWall")
+        {
             MessageTarget.SendMessage("OnFaceWallCollision", SendMessageOptions.DontRequireReceiver);
+        }
 
         if (collisionTarget.tag == "MoveBlock")
+        {
             MessageTarget.SendMessage("OnMoveBlockCollision", SendMessageOptions.DontRequireReceiver);
+        }
     }
 }

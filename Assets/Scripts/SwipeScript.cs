@@ -18,7 +18,7 @@ public class SwipeScript : MonoBehaviour
     }
     void OnSwipeUp()
     {
-        //StartCoroutine(Jump());
+        destinationPos = new Vector3(this.transform.position.x, this.transform.position.y+1, -9);
     }
     void OnSwipeDown()
     {
@@ -33,6 +33,10 @@ public class SwipeScript : MonoBehaviour
         if (this.transform.position != destinationPos)
         {
             this.transform.position = Vector3.MoveTowards(this.transform.position, destinationPos, 5.0f * Time.deltaTime);
+        }
+        if (this.transform.position.y == 2)
+        {
+            destinationPos = new Vector3(this.transform.position.x, this.transform.position.y - 1, -9);
         }
     }
 
