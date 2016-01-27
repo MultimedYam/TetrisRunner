@@ -10,6 +10,8 @@ public class GamemodeHandler : MonoBehaviour
 	private float timer = 5f;
 	
 	public float GameSpeed = 1;
+	
+	public GameObject UI = null;
 	// Use this for initialization
 	void Start () 
 	{
@@ -34,6 +36,8 @@ public class GamemodeHandler : MonoBehaviour
 		PlayerPrefs.SetInt("Score", Score);
 	}
 	
+	
+	//Rename to SetScore
 	void AddToScore(int val)
 	{
 		Score += val;
@@ -46,5 +50,21 @@ public class GamemodeHandler : MonoBehaviour
 	void ClearScore()
 	{
 		Score = 0;
+	}
+	
+	void GameOver()
+	{
+		Time.timeScale = 0.0f;
+	}
+	
+	void RemoveLife()
+	{
+		Lifes--;
+		
+		if (Lifes <= 0)
+		{
+			GameOver();
+			UI.SendMessage("SetGameOver", true, SendMessageOptions.DontRequireReceiver);
+		}
 	}
 }

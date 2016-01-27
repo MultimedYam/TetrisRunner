@@ -5,6 +5,8 @@ public class CollisionBehaviour : MonoBehaviour
 {
 
 	public GameObject MessageTarget = null;
+	public GameObject GameManager = null;
+	
 	[SerializeField]
 	public AudioClip coinPickupSound;
 	[SerializeField]
@@ -21,12 +23,14 @@ public class CollisionBehaviour : MonoBehaviour
         if (collisionTarget.tag == "FaceWall")
         {
         	audio.PlayOneShot(ObstacleHitSound, 1.0f);
+        	GameManager.SendMessage("RemoveLife");
             MessageTarget.SendMessage("OnFaceWallCollision", SendMessageOptions.DontRequireReceiver);
         }
 
         if (collisionTarget.tag == "MoveBlock")
         {
         	audio.PlayOneShot(ObstacleHitSound, 1.0f);
+        	GameManager.SendMessage("RemoveLife");
             MessageTarget.SendMessage("OnMoveBlockCollision", SendMessageOptions.DontRequireReceiver);
         }
 	    

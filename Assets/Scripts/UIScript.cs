@@ -8,6 +8,8 @@ public class UIScript : MonoBehaviour
 	
 	private int sessionScore = 0;
 	
+	public GameObject GameOverLabel;
+	
 	
 	/// <summary>
 	/// UI ELEMENTS
@@ -48,5 +50,13 @@ public class UIScript : MonoBehaviour
 	{
 		sessionScore += val;
 		UpdateScore();
+	}
+	
+	public void SetGameOver(bool val)
+	{
+		if (val)
+		{
+			GameOverLabel.GetComponent<Text>().text = "GAME\nOVER";
+		}
 	}
 }

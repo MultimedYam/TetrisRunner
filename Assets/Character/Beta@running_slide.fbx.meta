@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 18ed4856a15305f4db9c8af9c1be89a4
-timeCreated: 1445994724
+guid: f532ff0cddf76a64eb0f86850532a6d1
+timeCreated: 1453893128
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -150,7 +150,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleRotations: 1
     optimizeGameObjects: 0
-    motionNodeName: <Root Transform>
+    motionNodeName: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -166,7 +166,7 @@ ModelImporter:
       name: running_slide
       takeName: mixamo.com
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 46
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -184,7 +184,24 @@ ModelImporter:
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
+      curves:
+      - name: Curve
+        curve:
+          serializedVersion: 2
+          curve:
+          - time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: 1
+            value: 1
+            inSlope: 2
+            outSlope: 2
+            tangentMode: 0
+          preInfinity: 2
+          postInfinity: 0
+          rotationOrder: 0
       events: []
       transformMask:
       - path: 
@@ -345,7 +362,7 @@ ModelImporter:
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
-    tangentImportMode: 4
+    tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
