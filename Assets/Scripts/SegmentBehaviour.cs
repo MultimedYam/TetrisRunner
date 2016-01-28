@@ -6,15 +6,22 @@ public class SegmentBehaviour : MonoBehaviour
 	public GameObject NewSegmentToSpawn;
 	public float MovementSpeed;
 	private GameObject parentObject;
+	private GameObject gameManager;
+	
+	private float configuredMovementSpeed;
 	
 	// Update is called once per frame
 	void Start ()
 	{
+		gameManager = GameObject.Find("GameController");
 		parentObject = GameObject.Find("Floor");
+		
+		
 	}
 	void FixedUpdate () 
 	{
-		this.transform.Translate (Vector3.back * MovementSpeed * Time.deltaTime);
+		configuredMovementSpeed = gameManager.GetComponent<GamemodeHandler>().GameSpeed;
+		this.transform.Translate (Vector3.back * MovementSpeed * configuredMovementSpeed * Time.deltaTime);
 		if (this.transform.position.z <= -12)
 		{
 			GameObject childObject;

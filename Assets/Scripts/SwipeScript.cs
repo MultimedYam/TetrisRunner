@@ -8,6 +8,10 @@ public class SwipeScript : MonoBehaviour
 	private Animator animatorController;
 	private CapsuleCollider characterCapsule;
 	private float duckTimer;
+	
+	public AudioClip wilhelmScream;
+	private bool screaming = false;
+	public AudioClip jumpSound;
     void Start()
 	{
 		characterCapsule = this.GetComponent<CapsuleCollider>();
@@ -17,18 +21,19 @@ public class SwipeScript : MonoBehaviour
     void OnSwipeLeft()
     {
         print("Left Swipe");
-        destinationPos = new Vector3(this.transform.position.x - 1, this.transform.position.y, -9);
+	    destinationPos = new Vector3(this.transform.position.x - 1, 0, -9);
     }
     void OnSwipeRight()
     {
         print("Right Swipe");
-        destinationPos = new Vector3(this.transform.position.x + 1, this.transform.position.y, -9);
+	    destinationPos = new Vector3(this.transform.position.x + 1, 0, -9);
     }
     void OnSwipeUp()
     {
         print("Up Swipe");
 	    destinationPos = new Vector3(this.transform.position.x, 1.05f, -9);
-        animatorController.SetBool("Jump", true);
+	    animatorController.SetBool("Jump", true);
+	    GetComponent<AudioSource>().PlayOneShot(jumpSound);
     }
     void OnSwipeDown()
     {
@@ -47,9 +52,6 @@ public class SwipeScript : MonoBehaviour
 	
     void Update()
     {
-        //float distCovered = (Time.time - startTime) * speed;
-        //float fracJourney = distCovered / journeyLength;
-        //transform.position = Vector3.Lerp(startTransform.position, endTransform.position, fracJourney);
         if (this.transform.position != destinationPos)
         {
             this.transform.position = Vector3.MoveTowards(this.transform.position, destinationPos, 5.0f * Time.deltaTime);
@@ -80,6 +82,11 @@ public class SwipeScript : MonoBehaviour
 		    else if (this.transform.position.x > 2.5f)
 			    destinationPos = new Vector3(3f, -20f, this.transform.position.z);
 	    	animatorController.SetBool("Falling", true);
+	    	if (screaming == false)
+	    	{
+		    	GetComponent<AudioSource>().PlayOneShot(wilhelmScream);
+		    	screaming = true;
+	    	}
 	    }
 	    
     }

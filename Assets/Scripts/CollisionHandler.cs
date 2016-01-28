@@ -28,6 +28,7 @@ public class CollisionHandler : MonoBehaviour
 	void OnCoinPickup()
 	{
 		otherScript.AddToScore(5);
+		otherScript.AddCoin(1);
 		print ("Picked up Coin");
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class UIScript : MonoBehaviour 
@@ -7,6 +8,7 @@ public class UIScript : MonoBehaviour
 	private float timerTime = 1.0f;
 	
 	private int sessionScore = 0;
+	private int totalCoins = 0;
 	
 	public GameObject GameOverLabel;
 	
@@ -15,48 +17,91 @@ public class UIScript : MonoBehaviour
 	/// UI ELEMENTS
 	/// </summary>
 	public GameObject ScoreLabel;
+	public GameObject HighScoreLabel;
+	public GameObject CoinAmountLabel;
+	public GameObject LivesLabel;
 
-	// Use this for initialization
-	void Start () 
-	{
-	
-	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		UpdateScore();
+		UpdateUI();
 	}
 	
-	void UpdateScore()
+	void UpdateUI()
 	{
 		timerTime -= Time.deltaTime;
 		
 		if (timerTime <= 0)
 		{
-			sessionScore += 1;
 			if(ScoreLabel != null)
 			{
 				Text scoreVal = ScoreLabel.GetComponent<Text>();
 				scoreVal.text = sessionScore.ToString();
-			
 			}
-			
 			timerTime = 1.0f;
+		}
+		
+		if (totalCoins > 0)
+		{
+			CoinAmountLabel.GetComponent<Text>().text = totalCoins.ToString();
+		}
+	}
+	
+	public int GetScore()
+	{
+		return sessionScore;
+	}
+	
+	public void SetHighScore(int val)
+	{
+		if (val > 0)
+		{
+			Text hiScoreVal = HighScoreLabel.GetComponent<Text>();
+			hiScoreVal.text = val.ToString();
 		}
 	}
 	
 	public void AddToScore(int val)
 	{
 		sessionScore += val;
-		UpdateScore();
+		UpdateUI();
 	}
 	
 	public void SetGameOver(bool val)
 	{
 		if (val)
 		{
-			GameOverLabel.GetComponent<Text>().text = "GAME\nOVER";
+			GameOverLabel.SetActive(val);
 		}
+	}
+	
+	public void RestartRun()
+	{
+		Time.timeScale = 1.0f;
+		Application.LoadLevel(Application.loadedLevel);
+	}
+	
+	public void SetCoinValue(int val)
+	{
+		totalCoins = val;
+		Text totalCoinsLabel = CoinAmountLabel.GetComponent<Text>();
+		totalCoinsLabel.text = val.ToString();
+	}
+	
+	public void AddCoin(int val)
+	{
+		totalCoins += val;
+	}
+	
+	public void SetLivesValue(int val)
+	{
+		Text livesLabel = LivesLabel.GetComponent<Text>();
+		livesLabel.text = val.ToString();
+	}
+	
+	public void ReturnToMainMenu()
+	{
+		SceneManager.LoadScene("mainmenu");
 	}
 }

@@ -5,9 +5,10 @@ public class GamemodeHandler : MonoBehaviour
 {
 	public int Score { get; private set; }
 	public int HighScore {get; private set;}
-	public int Lifes { get; private set; }
+	public int Lives { get; private set; }
+	public int Coins { get; private set; }
 	
-	private float timer = 5f;
+	private float timer = 1f;
 	
 	public float GameSpeed = 1;
 	
@@ -15,9 +16,14 @@ public class GamemodeHandler : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		HighScore = PlayerPrefs.GetInt("Score");
+		HighScore = PlayerPrefs.GetInt("HighScore");
+		Coins = PlayerPrefs.GetInt("Coins");
         Score = 0;
-        Lifes = 2;
+		Lives = PlayerPrefs.GetInt("Lives");
+		
+		UI.GetComponent<UIScript>().SetHighScore(HighScore);
+		UI.GetComponent<UIScript>().SetCoinValue(Coins);
+		UI.GetComponent<UIScript>().SetLivesValue(Lives);
 	}
 	
 	// Update is called once per frame
@@ -27,24 +33,25 @@ public class GamemodeHandler : MonoBehaviour
 	    if (timer <= 0f)
 	    {
 	    	GameSpeed *= 1.001f;
-	    	timer = 5f;
+	    	UI.GetComponent<UIScript>().AddToScore(1);
+	    	timer = 1f;
 	    }
     }
 	
-	void OnApplicationQuit()
-	{
-		PlayerPrefs.SetInt("Score", Score);
-	}
-	
 	
 	//Rename to SetScore
-	void AddToScore(int val)
+	void SetScore(int val)
 	{
 		Score += val;
 		if (Score > HighScore)
 		{
 			HighScore = Score;
 		}
+	}
+	
+	void AddCoin(int val)
+	{
+		Coins += val;
 	}
 	
 	void ClearScore()
@@ -54,17 +61,29 @@ public class GamemodeHandler : MonoBehaviour
 	
 	void GameOver()
 	{
-		Time.timeScale = 0.0f;
+		PlayerPrefs.SetInt("HighScore", HighScore);
+		PlayerPrefs.SetInt("Coins", Coins);
+		
+		GetComponent<SwipeHandler>().TurnOffControls();
+		GetComponent<BlockSpawner>().StopSpawning();
+		GameObject.Find("Side Walls").GetComponent<BlockSpawner>().StopSpawning();
+		GameSpeed = 0;
+		UI.SendMessage("SetGameOver", true, SendMessageOptions.DontRequireReceiver);
+		
+		timer = 1000000;
 	}
 	
 	void RemoveLife()
 	{
-		Lifes--;
+		Lives--;
+		GameSpeed = 1f;
+		UI.GetComponent<UIScript>().SetLivesValue(Lives);
 		
-		if (Lifes <= 0)
+		if (Lives <= 0)
 		{
+			int score = UI.GetComponent<UIScript>().GetScore();
+			SetScore(score);
 			GameOver();
-			UI.SendMessage("SetGameOver", true, SendMessageOptions.DontRequireReceiver);
 		}
 	}
 }

@@ -6,6 +6,7 @@ public class CollisionBehaviour : MonoBehaviour
 
 	public GameObject MessageTarget = null;
 	public GameObject GameManager = null;
+	private Animator animatorController;
 	
 	[SerializeField]
 	public AudioClip coinPickupSound;
@@ -13,9 +14,16 @@ public class CollisionBehaviour : MonoBehaviour
 	public AudioClip ObstacleHitSound;
 	AudioSource audio;
 	
+	private ParticleSystem particles;
+	
+	
+	private int tempLives = 2;
+	
 	void Start()
 	{
 		audio = GetComponent<AudioSource>();
+		particles = GetComponent<ParticleSystem>();
+		animatorController = GetComponent<Animator>();
 	}
 
     void OnTriggerEnter(Collider collisionTarget)
@@ -24,21 +32,39 @@ public class CollisionBehaviour : MonoBehaviour
         {
         	audio.PlayOneShot(ObstacleHitSound, 1.0f);
         	GameManager.SendMessage("RemoveLife");
-            MessageTarget.SendMessage("OnFaceWallCollision", SendMessageOptions.DontRequireReceiver);
+        	tempLives --;
+	        MessageTarget.SendMessage("OnFaceWallCollision", SendMessageOptions.DontRequireReceiver);
+	        if (tempLives == 0)
+	        {
+	        	animatorController.SetBool("FallFlat", true);
+	        }
         }
 
         if (collisionTarget.tag == "MoveBlock")
         {
         	audio.PlayOneShot(ObstacleHitSound, 1.0f);
         	GameManager.SendMessage("RemoveLife");
-            MessageTarget.SendMessage("OnMoveBlockCollision", SendMessageOptions.DontRequireReceiver);
+        	tempLives --;
+	        MessageTarget.SendMessage("OnMoveBlockCollision", SendMessageOptions.DontRequireReceiver);
+	        if (tempLives == 0)
+	        {
+	        	animatorController.SetBool("FallFlat", true);
+	        }
         }
 	    
 	    if (collisionTarget.tag == "CoinPickup")
 	    {
 	    	audio.PlayOneShot(coinPickupSound, 1.0f);
-	    	Destroy(collisionTarget.gameObject);
+	    	particles.Emit(1);
+	    	particles.time = 0;
+	    	collisionTarget.SendMessage("SendToSpawn", SendMessageOptions.DontRequireReceiver);
+	    	GameManager.SendMessage("AddCoin", 1, SendMessageOptions.DontRequireReceiver);
 	    	MessageTarget.SendMessage("OnCoinPickup", SendMessageOptions.DontRequireReceiver);
+	    }
+	    
+	    if (collisionTarget.tag == "SideWall")
+	    {
+		    GameManager.SendMessage("GameOver");
 	    }
     }
 }

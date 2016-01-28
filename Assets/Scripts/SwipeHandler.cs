@@ -20,6 +20,14 @@ public class SwipeHandler : MonoBehaviour
         Screen.autorotateToLandscapeLeft = false;
         Screen.autorotateToLandscapeRight = false;
     }
+	
+	public void TurnOffControls()
+	{
+		sendUpMessage = false;
+		sendLeftMessage = false;
+		sendRightMessage = false;
+		sendDownMessage = false;
+	}
 
     void Update()
     {

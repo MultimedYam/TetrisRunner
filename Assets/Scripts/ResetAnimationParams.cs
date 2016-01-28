@@ -31,6 +31,7 @@ public class ResetAnimationParams : StateMachineBehaviour {
     {
         animator.SetBool("Jump", false);
 	    animator.SetBool("ShouldDuck", false);
+	    animator.SetBool("FallFlat", false);
     }
 
 }
